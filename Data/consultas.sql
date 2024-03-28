@@ -3,40 +3,38 @@ select * from cars;
 select * from repairs;
 select * from employees;
 
--- LISTA TODOS LOS CLIENTES Y SUS COCHES
-select CONCAT(c.first_name, ' ', c.last_name) AS CUSTOMER, CONCAT(ca.brand, ' ', ca.model) AS CAR
-from customers c
-left join cars ca ON c.customer_id = ca.customer_id;
+-- LIST ALL CUSTOMERS AND THEIR CARS
+SELECT CONCAT(c.first_name, ' ', c.last_name) AS CUSTOMER, CONCAT(ca.brand, ' ', ca.model) AS CAR
+FROM customers c
+LEFT JOIN cars ca ON c.customer_id = ca.customer_id;
 
--- CALCULAR PRECIO PROMEDIO DE LAS REPARACIONES
+-- CALCULATE AVERAGE PRICE OF REPAIRS
 SELECT AVG(cost) AS Average_Cost
 FROM repairs;
 
--- COCHE MAS ANTIGUO EN EL TALLER
+-- OLDEST CAR IN THE WORKSHOP
 SELECT brand, model, MIN(year) AS OldestCar
 FROM cars
 WHERE car_id IN (SELECT car_id FROM repairs);
 
--- MUESTRA TODOS LOS CLIENTES QUE HAN REALIZADO REPARACIONES JUNTO AL NUMERO TOTAL DE
--- REPARACIONES
+-- SHOW ALL CUSTOMERS WHO HAVE DONE REPAIRS ALONG WITH THE TOTAL NUMBER OF REPAIRS
 
-
--- LOS 3 PRIMEROS EMPLEADOS CON MAS REPARACIONES
+-- THE TOP 3 EMPLOYEES WITH THE MOST REPAIRS
 SELECT e.first_name, e.last_name, COUNT(r.repair_id) AS TOTAL_REPAIRS
-from employees e
+FROM employees e
 LEFT JOIN repairs r ON e.employee_id = r.repair_id
 GROUP BY e.employee_id
 ORDER BY TOTAL_REPAIRS DESC
 LIMIT 3;
 
--- SACAR EL PRECIO DE LA REPARACION CON EL COCHE A UN CLIENTE ESPECIFICO
-select r.cost, CONCAT(ca.brand, ' ', ca.model) AS CAR
-from repairs r
-left join cars ca ON r.car_id = ca.car_id
-left join customers c ON ca.customer_id = c.customer_id
-where c.first_name = 'amanda' and c.last_name= 'martinez';
+-- FETCH THE PRICE OF THE REPAIR WITH THE CAR TO A SPECIFIC CUSTOMER
+SELECT r.cost, CONCAT(ca.brand, ' ', ca.model) AS CAR
+FROM repairs r
+LEFT JOIN cars ca ON r.car_id = ca.car_id
+LEFT JOIN customers c ON ca.customer_id = c.customer_id
+WHERE c.first_name = 'amanda' AND c.last_name = 'martinez';
 
-select c.first_name, c.last_name
-from customers c
-left join cars ca ON c.customer_id = ca.customer_id
-where ca.brand = 'Audi' and ca.model = 'A3';
+SELECT c.first_name, c.last_name
+FROM customers c
+LEFT JOIN cars ca ON c.customer_id = ca.customer_id
+WHERE ca.brand = 'Audi' AND ca.model = 'A3';
